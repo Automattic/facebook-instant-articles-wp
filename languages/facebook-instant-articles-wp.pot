@@ -3,24 +3,32 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: Instant Articles for WP\n"
-"POT-Creation-Date: 2015-11-27 11:17+0100\n"
-"PO-Revision-Date: 2015-11-12 20:54+0100\n"
-"Last-Translator: Bjørn Johansen <bjorn@dekode.no>\n"
-"Language-Team: Bjørn Johansen <bjorn@dekode.no>\n"
+"POT-Creation-Date: 2016-03-09 22:24+0100\n"
+"PO-Revision-Date: 2016-03-09 22:23+0100\n"
+"Last-Translator: Bjørn Johansen <post@bjornjohansen.no>\n"
+"Language-Team: Bjørn Johansen <post@bjornjohansen.no>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.6\n"
+"X-Generator: Poedit 1.8.7\n"
 "X-Poedit-Basepath: ..\n"
-"X-Poedit-WPHeader: instant-articles.php\n"
+"X-Poedit-WPHeader: facebook-instant-articles.php\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
-"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;"
-"_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 
-#: feed-template.php:7
+#: class-instant-articles-post.php:108
+msgid "There is no excerpt because this is a protected post."
+msgstr ""
+
+#: class-instant-articles-post.php:518
+msgid "Uncategorized"
+msgstr ""
+
+#: feed-template.php:9
 msgid "Instant Articles"
 msgstr ""
 
@@ -33,9 +41,9 @@ msgid "Add support for Instant Articles for Facebook to your WordPress site."
 msgstr ""
 
 #. Author of the plugin/theme
-msgid "Dekode"
+msgid "Automattic, Dekode"
 msgstr ""
 
 #. Author URI of the plugin/theme
-msgid "https://dekode.no"
+msgid "https://vip.wordpress.com/plugins/instant-articles/"
 msgstr ""

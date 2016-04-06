@@ -1,0 +1,47 @@
+msgid ""
+msgstr ""
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Project-Id-Version: Instant Articles for WP\n"
+"POT-Creation-Date: 2016-03-09 22:25+0100\n"
+"PO-Revision-Date: 2016-03-09 22:28+0100\n"
+"Language-Team: Bjørn Johansen <post@bjornjohansen.no>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.7\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-WPHeader: facebook-instant-articles.php\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"Last-Translator: Bjørn Johansen <post@bjornjohansen.no>\n"
+"Language: nb_NO\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+
+#: class-instant-articles-post.php:108
+msgid "There is no excerpt because this is a protected post."
+msgstr "Det er ikke noe utdrag fordi dette er et beskyttet innlegg."
+
+#: class-instant-articles-post.php:518
+msgid "Uncategorized"
+msgstr "Ukategorisert"
+
+#: feed-template.php:9
+msgid "Instant Articles"
+msgstr "Direkteartikler (Instant Articles)"
+
+#. Plugin Name of the plugin/theme
+msgid "Instant Articles for WP"
+msgstr "Instant Articles for WP"
+
+#. Description of the plugin/theme
+msgid "Add support for Instant Articles for Facebook to your WordPress site."
+msgstr "Legg til støtte for direkteartikler (Instant Articles) for Facebook på ditt WordPress-nettsted."
+
+#. Author of the plugin/theme
+msgid "Automattic, Dekode"
+msgstr "Automattic, Dekode"
+
+#. Author URI of the plugin/theme
+msgid "https://vip.wordpress.com/plugins/instant-articles/"
+msgstr "https://vip.wordpress.com/plugins/instant-articles/"
