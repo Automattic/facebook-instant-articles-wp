@@ -22,6 +22,7 @@ class Instant_Articles_Publisher {
 	 */
 	public static function init() {
 		add_action( 'save_post', array( 'Instant_Articles_Publisher', 'submit_article' ), 10, 2 );
+		add_action( 'transition_post_status', array( 'Instant_Articles_Publisher', 'unpublish_article' ), 10, 3 );
 	}
 
 	/**
@@ -45,7 +46,25 @@ class Instant_Articles_Publisher {
 		// Transform the post to an Instant Article.
 		$adapter = new Instant_Articles_Post( $post );
 		$article = $adapter->to_instant_article();
+		
+		// Import published Instant Article		
+		self::import_article($article, false);
 
+	}
+
+	public static function unpublish_article( $new_status, $old_status, $post ) {
+	  if ( $old_status == 'publish'  &&  $new_status != 'publish' ) {
+			
+			// Transform the post to an Instant Article.
+			$adapter = new Instant_Articles_Post( $post );
+			$article = $adapter->to_instant_article();
+			
+			// Import unpublished Instant Article		
+			self::import_article($article, true);
+	  }
+	}
+
+	public static function import_article($article, $shouldBeDraft){
 		// Instantiate an API client.
 		try {
 			$fb_app_settings = Instant_Articles_Option_FB_App::get_option_decoded();
@@ -69,7 +88,7 @@ class Instant_Articles_Publisher {
 					$dev_mode
 				);
 
-				if ( $dev_mode ) {
+				if ( $dev_mode || $shouldBeDraft) {
 					$take_live = false;
 				} else {
 					// Any publish status other than 'publish' means draft for the Instant Article.
@@ -90,5 +109,5 @@ class Instant_Articles_Publisher {
 				$e->getTraceAsString()
 			);
 		}
-	}
+	} 
 }
