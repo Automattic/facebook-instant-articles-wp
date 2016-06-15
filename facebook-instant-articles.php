@@ -166,6 +166,12 @@ if ( version_compare( PHP_VERSION, '5.4', '<' ) ) {
 			$query->set( 'posts_per_page', 10 );
 			$query->set( 'posts_per_rss', 10 );
 
+			$settings_publishing = Instant_Articles_Option_Publishing::get_option_decoded();
+
+			if( $settings_publishing['categories'] !== '' ) {
+				$query->set( 'cat', $settings_publishing['categories'] );
+			}
+
 			/**
 			 * If the constant INSTANT_ARTICLES_LIMIT_POSTS is set to true, we will limit the feed
 			 * to only include posts which are modified within the last 24 hours.
