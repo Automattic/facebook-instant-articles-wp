@@ -27,6 +27,9 @@
         "class": "ParagraphRule",
         "selector": "p"
     }, {
+        "class": "PassThroughRule",
+        "selector": "sup"
+    }, {
         "class": "LineBreakRule",
         "selector": "br"
     }, {
