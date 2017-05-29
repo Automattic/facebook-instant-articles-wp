@@ -55,6 +55,14 @@ class Instant_Articles_Option_Publishing extends Instant_Articles_Option {
 			'checkbox_label' => 'Publish articles containing warnings',
 		),
 
+		'publish_formatted' => array(
+			'label' => 'Format articles',
+			'description' => 'With this option enabled, articles will be formatted before ingestion. This helps finding errors and understand the final markup Instant Article document.',
+			'render' => 'checkbox',
+			'default' => false,
+			'checkbox_label' => 'Publish articles formatted',
+		),
+
 		'likes_on_media' => array(
 			'label' => 'Likes',
 			'description' => 'With this option enabled, any image or video will have the like action enabled by default.',

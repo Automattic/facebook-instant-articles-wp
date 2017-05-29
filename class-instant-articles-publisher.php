@@ -125,13 +125,16 @@ class Instant_Articles_Publisher {
 					$published = apply_filters( 'instant_articles_post_published', true, $post_id );
 				}
 
+				// Checks if it will render article formatted - With spaces and tabs.
+				$publishArticleFormatted = isset( $publishing_settings[ 'publish_formatted' ] ) ? (bool) $publishing_settings[ 'publish_formatted' ] : false;
+
 				try {
 					// Import the article.
-					$submission_id = $client->importArticle( $article, $published );
+					$submission_id = $client->importArticle( $article, $published, true, $publishArticleFormatted );
 					update_post_meta( $post_id, self::SUBMISSION_ID_KEY, $submission_id );
 				} catch ( Exception $e ) {
 					// Try without taking live for pages not yet reviewed.
-					$submission_id = $client->importArticle( $article, false );
+					$submission_id = $client->importArticle( $article, false, true, $publishArticleFormatted );
 					update_post_meta( $post_id, self::SUBMISSION_ID_KEY, $submission_id );
 				}
 			}

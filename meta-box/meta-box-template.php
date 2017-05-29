@@ -200,7 +200,7 @@ use Facebook\InstantArticles\Client\ServerMessage;
 	</div>
 	<div>
 		<label for="transformed">Transformed Markup:</label>
-		<textarea class="source" readonly><?php echo esc_textarea( $article->render( '', true ) ); ?></textarea>
+		<textarea class="source" readonly><?php echo esc_textarea( $article->render( null, true ) ); ?></textarea>
 	</div>
 	<br clear="all">
 </div>
