@@ -28,7 +28,7 @@ class Instant_Articles_Wizard {
 
 		add_action( 'admin_menu', array( 'Instant_Articles_Wizard', 'menu_items' ) );
 
-		add_filter( 'plugin_action_links_' . IA_PLUGIN_PATH, array( 'Instant_Articles_Wizard', 'add_settings_link_to_plugin_actions' ) );
+        add_filter( 'plugin_action_links_' . IA_PLUGIN_PATH, array( 'Instant_Articles_Wizard', 'add_settings_link_to_plugin_actions' ) );
 
 		add_action( 'admin_init', function () {
 			new Instant_Articles_Option_FB_Page();
@@ -42,6 +42,24 @@ class Instant_Articles_Wizard {
 
 	}
 
+    public static function load_admin_scripts_and_styles() {
+        add_action( 'admin_enqueue_scripts', array( 'Instant_Articles_Wizard', 'instant_articles_enqueue_scripts' ) );
+    }
+
+    public static function instant_articles_enqueue_scripts() {
+		wp_enqueue_style( 'instant-articles-meta-box' );
+		wp_enqueue_style( 'instant-articles-settings-wizard' );
+		wp_enqueue_style( 'instant-articles-settings' );
+		wp_enqueue_style( 'instant-articles-wizard' );
+
+		wp_enqueue_script( 'instant-articles-meta-box' );
+		wp_enqueue_script( 'instant-articles-option-ads' );
+		wp_enqueue_script( 'instant-articles-option-analytics' );
+		wp_enqueue_script( 'instant-articles-option-publishing' );
+		wp_enqueue_script( 'instant-articles-settings' );
+		wp_enqueue_script( 'instant-articles-wizard' );
+	}
+
 	public static function add_settings_link_to_plugin_actions( $links ) {
 		$link_text = __( 'Settings' );
 		$settings_href = self::get_url();
@@ -51,7 +69,7 @@ class Instant_Articles_Wizard {
 	}
 
 	public static function menu_items() {
-		add_menu_page(
+		$adminpage = add_menu_page(
 			'Instant Articles Setup Wizard',
 			'Instant Articles',
 			'manage_options',
@@ -59,7 +77,8 @@ class Instant_Articles_Wizard {
 			array( 'Instant_Articles_Wizard', 'render' )
 			,'dashicons-facebook'
 		);
-		// Hack to let the URL visible to ajax handlers
+        add_action( 'load-' . $adminpage, array( 'Instant_Articles_Wizard', 'load_admin_scripts_and_styles' ) );
+        // Hack to let the URL visible to ajax handlers
 		update_option( 'instant-articles-wizard-url', menu_page_url( 'instant-articles-wizard', false) );
 	}
 

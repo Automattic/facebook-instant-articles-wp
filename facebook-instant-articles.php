@@ -320,26 +320,6 @@ if ( version_compare( PHP_VERSION, '5.4', '<' ) ) {
 	add_action( 'init', 'instant_articles_register_scripts' );
 
 	/**
-	 * Enqueue all scripts and styles for the admin UI.
-	 *
-	 * @since 0.4
-	 */
-	function instant_articles_enqueue_scripts() {
-		wp_enqueue_style( 'instant-articles-meta-box' );
-		wp_enqueue_style( 'instant-articles-settings-wizard' );
-		wp_enqueue_style( 'instant-articles-settings' );
-		wp_enqueue_style( 'instant-articles-wizard' );
-
-		wp_enqueue_script( 'instant-articles-meta-box' );
-		wp_enqueue_script( 'instant-articles-option-ads' );
-		wp_enqueue_script( 'instant-articles-option-analytics' );
-		wp_enqueue_script( 'instant-articles-option-publishing' );
-		wp_enqueue_script( 'instant-articles-settings' );
-		wp_enqueue_script( 'instant-articles-wizard' );
-	}
-	add_action( 'admin_enqueue_scripts', 'instant_articles_enqueue_scripts' );
-
-	/**
 	 * Automatically add meta tag for Instant Articles URL claiming
 	 * when page is set.
 	 *
