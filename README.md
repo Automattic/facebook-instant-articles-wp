@@ -11,6 +11,8 @@ Enable [Instant Articles for Facebook](https://developers.facebook.com/docs/inst
 
 This plugin adds support for Instant Articles for Facebook, which is a new way for publishers to distribute fast, interactive stories on Facebook. Instant Articles are preloaded in the Facebook mobile app so they load instantly.
 
+**Instant Articles for WP only works on sites with non-minimal readership. If you do not have an active Facebook page with  non-minimal readership your site will not be accepted to Instant Articles even if you configure this plugin correctly.**
+
 With the plugin active, a new menu will be available for you to connect to your Facebook Page and start publishing your Instant Articles. You'll also see the status of each Instant Articles submission on the edit page of your posts.
 
 A best effort is made to generate valid Instant Article markup from your posts' content/metadata and publish it to Facebook. The plugin knows how to transform your posts' markup from a set of rules which forms a mapping between elements in you *source markup* and the valid *Instant Article components*. We refer to this “glue” between the two as the ***Transformer Rules***.
@@ -19,7 +21,7 @@ Built-in to the plugin are many [pre-defined transformer rules](https://github.c
 
 ## Feed submission to Facebook
 
-Facebook has a review process where they verify that all Instant Articles are properly formatted, have content consistency with their mobile web counterparts, and adhere to their community standards and content policies. You will not be able to publish Instant Articles in Facebook until your feed has been approved.
+Facebook has a review process where they verify that your site has non-minimal readership, your Facebook page is active, all Instant Articles are properly formatted, have content consistency with their mobile web counterparts, and adhere to their community standards and content policies. You will not be able to publish Instant Articles in Facebook until your feed has been approved. 
 
 It's important to note that if you use meta fields to add extra text, images or videos to your Posts, Facebook will expect you to add these to your Instant Articles output too. This plugin includes hooks to help you do that.
 
