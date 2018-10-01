@@ -58,3 +58,8 @@ $playbuzz->init();
 include( dirname( __FILE__ ) . '/compat/class-instant-articles-apester.php' );
 $apester = new Instant_Articles_Apester;
 $apester->init();
+
+// Load support for Themify Video
+include( dirname( __FILE__ ) . '/compat/class-instant-articles-themify.php' );
+$themify = new Instant_Articles_Themify;
+$themify->init();

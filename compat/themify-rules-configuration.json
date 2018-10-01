@@ -1,0 +1,33 @@
+{
+  "rules": [
+    { "class": "PassThroughRule", "selector": "div" },
+    {
+      "class": "InteractiveRule",
+      "selector": "div.video-wrap",
+      "properties": {
+        "interactive.iframe": {
+          "type": "string",
+          "selector": "iframe",
+          "attribute": "src"
+        }
+      }
+    },
+    { "class": "SlideshowRule", "selector": "ul.themify_builder_slider" },
+    {
+      "class": "SlideshowImageRule",
+      "selector": "li",
+      "properties": {
+        "image.url": {
+          "type": "string",
+          "selector": "img",
+          "attribute": "src"
+        },
+        "caption.title": {
+          "type": "string",
+          "selector": "img",
+          "attribute": "alt"
+        }
+      }
+    }
+  ]
+}
