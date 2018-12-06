@@ -419,6 +419,11 @@ if ( version_compare( PHP_VERSION, '5.4', '<' ) ) {
 
 	function fbia_indicator_column_heading( $columns ) {
 		$publishing_settings = Instant_Articles_Option_Publishing::get_option_decoded();
+
+		if(!isset($publishing_settings[ 'display_warning_column' ])) {
+		    return $columns;
+        }
+
 		$display_warning_column = $publishing_settings[ 'display_warning_column' ];
 
 		if( "1" === $display_warning_column ) {
@@ -431,6 +436,10 @@ if ( version_compare( PHP_VERSION, '5.4', '<' ) ) {
 	function fbia_indication_column( $column_name, $post_ID ) {
 		$publishing_settings = Instant_Articles_Option_Publishing::get_option_decoded();
 		$display_warning_column = $publishing_settings[ 'display_warning_column' ];
+
+		if(!isset($publishing_settings[ 'display_warning_column' ])) {
+		    return;
+        }
 
 		if( "1" === $display_warning_column ) {
 			$red_light = '<span title="Instant article is empty after transformation." class="instant-articles-col-status error"></span>';
