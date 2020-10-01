@@ -122,3 +122,24 @@ function instant_articles_embed_get_html( $provider_name, $html, $url, $attr, $p
 
 	return $html;
 }
+
+/**
+ * Jetpack Compatibility. Re-insert scripts that got "stripped on purpose" in Jetpack.
+ *
+ * @param $content
+ * @param $post_id
+ */
+function instant_articles_jetpack_compatibility($content, $post_id) {
+    // Check if Jetpack stripped and enqueued Instagram embed script.
+    if (wp_script_is('jetpack-instagram-embed', 'enqueued')) {
+        $instagram_embed = '<script async defer src="https://www.instagram.com/embed.js"></script>';
+        $regex = '#<blockquote[^>]+?class="instagram-media"[^>](?:.+?)>(?:.+?)<\/blockquote>#ixs';
+        if (!preg_match_all($regex, $content, $matches, PREG_SET_ORDER)) {
+            return $content;
+        }
+
+        $content = preg_replace($regex, '$0' . $instagram_embed, $content, 1);
+    }
+    return $content;
+}
+add_filter( 'instant_articles_content', 'instant_articles_jetpack_compatibility', 10, 4 );
