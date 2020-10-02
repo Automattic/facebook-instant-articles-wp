@@ -162,6 +162,8 @@ if ( version_compare( PHP_VERSION, '5.4', '<' ) ) {
 
 		if ( $query->is_main_query() && $query->is_feed( INSTANT_ARTICLES_SLUG ) ) {
 
+			instant_articles_init_embed_filters();
+
 			$query->set( 'orderby', 'modified' );
 			$query->set( 'posts_per_page', 10 );
 			$query->set( 'posts_per_rss', 10 );

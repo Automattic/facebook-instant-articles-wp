@@ -8,9 +8,12 @@
  */
 
 /**
- * Remove all extra oembed html filters added by themes and plugins.
+ * Initialize the embed filters for the feed
  */
-remove_all_filters( 'embed_oembed_html' );
+function instant_articles_init_embed_filters() {
+	remove_all_filters( 'embed_oembed_html' );
+	add_filter( 'embed_oembed_html', 'instant_articles_embed_oembed_html', 10, 4 );
+}
 
 /**
  * Filter the oembed results to see if we should do some extra handling
@@ -74,7 +77,6 @@ function instant_articles_embed_oembed_html( $html, $url, $attr, $post_id ) {
 	return $html;
 
 }
-add_filter( 'embed_oembed_html', 'instant_articles_embed_oembed_html', 10, 4 );
 
 
 /**
