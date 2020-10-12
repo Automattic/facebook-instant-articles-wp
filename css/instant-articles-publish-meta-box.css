@@ -1,0 +1,27 @@
+.misc-fbia-status .fbia-icon {
+	float: left;
+	background: transparent url( '../assets/fbia-icon.svg' ) no-repeat left;
+	background-size: 17px;
+	width: 17px;
+	height: 17px;
+	margin: 0 8px 0 1px;
+}
+
+#fbia-status-select fieldset {
+	margin: 7px 0 0 1px;
+}
+
+#fbia-status-select .notice {
+	margin: 10px 0 -5px 3px;
+}
+
+.fbia-status-actions {
+	margin-top: 10px;
+}
+
+@media screen and ( max-width: 782px ) {
+	#fbia-status-select {
+		line-height: 280%;
+	}
+}
+

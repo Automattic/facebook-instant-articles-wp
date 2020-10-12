@@ -38,6 +38,7 @@ if ( version_compare( PHP_VERSION, '5.4', '<' ) ) {
 	define( 'IA_PLUGIN_VERSION', '4.2.1' );
 	define( 'IA_PLUGIN_PATH_FULL', __FILE__ );
 	define( 'IA_PLUGIN_PATH', plugin_basename( __FILE__ ) );
+	define( 'IA_PLUGIN_DIRECTORY', __DIR__ );
 	define( 'IA_PLUGIN_FILE_BASENAME', pathinfo( __FILE__, PATHINFO_FILENAME ) );
 	define( 'IA_PLUGIN_TEXT_DOMAIN', 'instant-articles' );
 	define( 'IA_PLUGIN_FORCE_SUBMIT_KEY', 'instant_articles_force_submit' );
@@ -53,6 +54,7 @@ if ( version_compare( PHP_VERSION, '5.4', '<' ) ) {
 	require_once( dirname( __FILE__ ) . '/meta-box/class-instant-articles-meta-box.php' );
 	require_once( dirname( __FILE__ ) . '/class-instant-articles-amp-markup.php' );
 	require_once( dirname( __FILE__ ) . '/class-instant-articles-signer.php' );
+	require_once( dirname( __FILE__ ) . '/class-instant-articles-publish-meta-box.php' );
 
 	/**
 	 * Plugin activation hook to add our rewrite rules.
@@ -582,5 +584,12 @@ if ( version_compare( PHP_VERSION, '5.4', '<' ) ) {
 		}
 	}
 	add_action( 'save_post', 'rescrape_article', 999, 2 );
+
+	function instant_articles_should_submit_post( $should_show, $ia_object ){
+		$status = Instant_Articles_Publish_Meta_Box::get_status( $ia_object->get_the_id() );
+
+		return Instant_Articles_Publish_Meta_Box::ENABLED_STATUS === $status;
+	}
+	add_filter( 'instant_articles_should_submit_post', 'instant_articles_should_submit_post', 10, 2 );
 
 }
