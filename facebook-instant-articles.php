@@ -51,7 +51,6 @@ if ( version_compare( PHP_VERSION, '5.4', '<' ) ) {
 	require_once( dirname( __FILE__ ) . '/class-instant-articles-post.php' );
 	require_once( dirname( __FILE__ ) . '/wizard/class-instant-articles-wizard.php' );
 	require_once( dirname( __FILE__ ) . '/meta-box/class-instant-articles-meta-box.php' );
-	require_once( dirname( __FILE__ ) . '/class-instant-articles-amp-markup.php' );
 	require_once( dirname( __FILE__ ) . '/class-instant-articles-signer.php' );
 
 	/**
@@ -371,9 +370,6 @@ if ( version_compare( PHP_VERSION, '5.4', '<' ) ) {
 	}
 	add_action( 'wp_head', 'inject_ia_markup_meta_tag' );
 
-	// Injects the <link rel...> tag if the AMP Markup is enabled
-	add_action( 'wp_head', array('Instant_Articles_AMP_Markup', 'inject_link_rel') );
-
 	// Initialize the Instant Articles meta box.
 	Instant_Articles_Meta_Box::init();
 
@@ -390,9 +386,6 @@ if ( version_compare( PHP_VERSION, '5.4', '<' ) ) {
 		}
 	}
 	add_action( 'wp', 'ia_markup_version' );
-
-	// Add hook for generating the AMP markup
-	add_action( 'wp', array('Instant_Articles_AMP_Markup', 'markup_version') );
 
 	Instant_Articles_Wizard::init();
 	Instant_Articles_Signer::init();

@@ -12,7 +12,6 @@ require_once( dirname( __FILE__ ) . '/class-instant-articles-option-fb-page.php'
 require_once( dirname( __FILE__ ) . '/class-instant-articles-option-fb-app.php' );
 require_once( dirname( __FILE__ ) . '/class-instant-articles-option-publishing.php' );
 require_once( dirname( __FILE__ ) . '/class-instant-articles-option-styles.php' );
-require_once( dirname( __FILE__ ) . '/class-instant-articles-option-amp.php' );
 
 use Facebook\InstantArticles\Client\Client;
 use Facebook\InstantArticles\Client\ClientException;
@@ -37,7 +36,6 @@ class Instant_Articles_Wizard {
 			new Instant_Articles_Option_Ads();
 			new Instant_Articles_Option_Analytics();
 			new Instant_Articles_Option_Publishing();
-			new Instant_Articles_Option_AMP();
 		});
 
 	}
