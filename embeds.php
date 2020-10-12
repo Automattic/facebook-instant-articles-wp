@@ -24,16 +24,16 @@ remove_all_filters( 'embed_oembed_html' );
  */
 function instant_articles_embed_oembed_html( $html, $url, $attr, $post_id ) {
 
-	$cache_key = md5( $url . ':instant_articles_oembed_provider' );
+	$cache_key     = md5( $url . ':instant_articles_oembed_provider' );
 	$provider_name = get_transient( $cache_key );
 
 	if ( false === $provider_name ) {
 		if ( ! class_exists( 'WP_oEmbed' ) ) {
-			include_once( ABSPATH . WPINC . '/class-oembed.php' );
+			include_once ABSPATH . WPINC . '/class-oembed.php';
 		}
 
 		// Instead of checking all possible URL variants, use the provider list from WP_oEmbed.
-		$wp_oembed = new WP_oEmbed();
+		$wp_oembed    = new WP_oEmbed();
 		$provider_url = $wp_oembed->get_provider( $url );
 
 		$provider_name = false;
@@ -43,11 +43,11 @@ function instant_articles_embed_oembed_html( $html, $url, $attr, $post_id ) {
 			$provider_name = 'twitter';
 		} elseif ( false !== strpos( $provider_url, 'youtube.com' ) ) {
 			$provider_name = 'youtube';
-		} elseif( false !== strpos( $provider_url, 'vimeo.com' ) ) {
+		} elseif ( false !== strpos( $provider_url, 'vimeo.com' ) ) {
 			$provider_name = 'vimeo';
-		} elseif( false !== strpos( $provider_url, 'vine.co' ) ) {
+		} elseif ( false !== strpos( $provider_url, 'vine.co' ) ) {
 			$provider_name = 'vine';
-		} elseif( false !== strpos( $provider_url, 'facebook.com' ) ) {
+		} elseif ( false !== strpos( $provider_url, 'facebook.com' ) ) {
 			$provider_name = 'facebook';
 		}
 

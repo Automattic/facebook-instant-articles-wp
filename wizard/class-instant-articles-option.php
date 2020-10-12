@@ -12,9 +12,9 @@
  */
 class Instant_Articles_Option {
 
-	const PAGE_OPTION_GROUP = 'instant-articles-settings';
+	const PAGE_OPTION_GROUP        = 'instant-articles-settings';
 	const PAGE_OPTION_GROUP_WIZARD = 'instant-articles-settings-wizard';
-	public static $fields = array();
+	public static $fields          = array();
 
 	/**
 	 * Settings for options.
@@ -76,8 +76,8 @@ class Instant_Articles_Option {
 	 * @since 0.4
 	 */
 	public function __construct( $option_key, $sections, $option_fields, $option_group = null ) {
-		$this->key = $option_key;
-		$this->sections = $sections;
+		$this->key               = $option_key;
+		$this->sections          = $sections;
 		$this->field_definitions = $option_fields;
 		$this->page_option_group = null === $option_group
 			? self::PAGE_OPTION_GROUP
@@ -174,12 +174,12 @@ class Instant_Articles_Option {
 			? wp_kses(
 				$this->sections['description'],
 				array(
-					'a' => array(
-						'href' => array(),
+					'a'      => array(
+						'href'   => array(),
 						'target' => array(),
 					),
-					'em' => array(),
-					'p' => array(),
+					'em'     => array(),
+					'p'      => array(),
 					'strong' => array(),
 				)
 			)
@@ -207,10 +207,10 @@ class Instant_Articles_Option {
 			// Default values of arguments for renderer.
 			$renderer_args = array(
 				// The "label_for" arg causes WordPress to wrap the label of the field with a <label> tag.
-				'label_for' => $standalone_id,
+				'label_for'             => $standalone_id,
 				'serialized_with_group' => $this->key,
-				'render' => 'text',
-				'value' => self::$settings[ $field_key ],
+				'render'                => 'text',
+				'value'                 => self::$settings[ $field_key ],
 			);
 
 			// Override default arguments for renderer.
@@ -225,7 +225,7 @@ class Instant_Articles_Option {
 				if ( 'visible' === $key && false === $val ) {
 					$renderer_args['class'] = ( ! empty( $renderer_args['class'] )
 						? $renderer_args['class'] . ' '
-						: '') . 'hidden';
+						: '' ) . 'hidden';
 				}
 			}
 
@@ -270,9 +270,9 @@ class Instant_Articles_Option {
 		// Determines correct values based on whether the settings option
 		// is intended to be serialized as a field of a parent option name.
 		if ( gettype( 'string' === $args['serialized_with_group'] ) ) {
-			$group = $args['serialized_with_group'];
+			$group     = $args['serialized_with_group'];
 			$group_key = substr( $id, strlen( $group . '-' ) );
-			$name = $group . '[' . $group_key . ']';
+			$name      = $group . '[' . $group_key . ']';
 		} else {
 			$name = $id;
 		}
@@ -289,11 +289,11 @@ class Instant_Articles_Option {
 			? wp_kses(
 				$args['description'],
 				array(
-					'a' => array(
-						'href' => array(),
+					'a'      => array(
+						'href'   => array(),
 						'target' => array(),
 					),
-					'em' => array(),
+					'em'     => array(),
 					'strong' => array(),
 				)
 			)
@@ -308,8 +308,8 @@ class Instant_Articles_Option {
 				?>
 				<input
 					type="hidden"
-					name="<?php echo esc_attr( $name ) ?>"
-					id="<?php echo esc_attr( $id ) ?>"
+					name="<?php echo esc_attr( $name ); ?>"
+					id="<?php echo esc_attr( $id ); ?>"
 					value="<?php echo esc_attr( $option_value ); ?>"
 				/>
 				<?php if ( $field_description ) : ?>
@@ -327,8 +327,8 @@ class Instant_Articles_Option {
 					<input
 						type="checkbox"
 						value="1"
-						name="<?php echo esc_attr( $name ) ?>"
-						id="<?php echo esc_attr( $id ) ?>"
+						name="<?php echo esc_attr( $name ); ?>"
+						id="<?php echo esc_attr( $id ); ?>"
 						<?php echo esc_attr( $attr_checked ); ?>
 						<?php echo esc_attr( $attr_disabled ); ?>
 					/>
@@ -345,15 +345,16 @@ class Instant_Articles_Option {
 			case 'select':
 				?>
 				<select
-					id="<?php echo esc_attr( $id ) ?>"
-					name="<?php echo esc_attr( $name ) ?>"
-					<?php echo esc_html( $attr_disabled ) ?>
+					id="<?php echo esc_attr( $id ); ?>"
+					name="<?php echo esc_attr( $name ); ?>"
+					<?php echo esc_html( $attr_disabled ); ?>
 				>
 				<?php foreach ( $args['select_options'] as $option_key => $option_name ) : ?>
 					<option
-						value="<?php echo esc_attr( $option_key ) ?>"
-						<?php echo selected( $option_key, $option_value ) ?>
-						<?php echo isset( $args['disable'] )
+						value="<?php echo esc_attr( $option_key ); ?>"
+						<?php echo selected( $option_key, $option_value ); ?>
+						<?php 
+						echo isset( $args['disable'] )
 							&& gettype( $args['disable'] ) === 'array'
 							&& in_array( $option_key, $args['disable'], true )
 						? disabled()
@@ -375,18 +376,18 @@ class Instant_Articles_Option {
 			case 'textarea':
 				?>
 				<textarea
-					name="<?php echo esc_attr( $name ) ?>"
-					id="<?php echo esc_attr( $id ) ?>"
+					name="<?php echo esc_attr( $name ); ?>"
+					id="<?php echo esc_attr( $id ); ?>"
 					<?php if ( $placeholder ) : ?>
 						placeholder="<?php echo esc_attr( $placeholder ); ?>"
 					<?php endif; ?>
 					<?php echo esc_attr( $attr_disabled ); ?>
 					class="large-text code"
 					rows="8"
-				><?php echo array_key_exists( 'double_encode', $args ) && $args[ 'double_encode' ] ? htmlspecialchars( $option_value ) : esc_html( $option_value ); ?></textarea>
+				><?php echo array_key_exists( 'double_encode', $args ) && $args['double_encode'] ? htmlspecialchars( $option_value ) : esc_html( $option_value ); ?></textarea>
 				<?php if ( $field_description ) : ?>
 					<p class="description">
-						<?php echo wp_kses_post( $field_description); ?>
+						<?php echo wp_kses_post( $field_description ); ?>
 					</p>
 				<?php endif; ?>
 				<?php
@@ -397,14 +398,14 @@ class Instant_Articles_Option {
 			default:
 				?>
 				<input
-					type="<?php echo esc_attr( $type ) ?>"
-					name="<?php echo esc_attr( $name ) ?>"
-					id="<?php echo esc_attr( $id ) ?>"
+					type="<?php echo esc_attr( $type ); ?>"
+					name="<?php echo esc_attr( $name ); ?>"
+					id="<?php echo esc_attr( $id ); ?>"
 					<?php if ( $placeholder ) : ?>
-						placeholder="<?php echo esc_attr( $placeholder ) ?>"
+						placeholder="<?php echo esc_attr( $placeholder ); ?>"
 					<?php endif; ?>
-					<?php echo esc_attr( $attr_disabled ) ?>
-					value="<?php echo esc_attr( $option_value ) ?>"
+					<?php echo esc_attr( $attr_disabled ); ?>
+					value="<?php echo esc_attr( $option_value ); ?>"
 					class="regular-text"
 				/>
 				<?php if ( $field_description ) : ?>
@@ -468,7 +469,7 @@ class Instant_Articles_Option {
 			$option_key = static::OPTION_KEY;
 		}
 
-		wp_cache_delete ( 'alloptions', 'options' );
+		wp_cache_delete( 'alloptions', 'options' );
 		update_option( $option_key, $option );
 	}
 	/**
@@ -484,7 +485,7 @@ class Instant_Articles_Option {
 			$option_key = static::OPTION_KEY;
 		}
 
-		wp_cache_delete ( 'alloptions', 'options' );
+		wp_cache_delete( 'alloptions', 'options' );
 		delete_option( $option_key );
 	}
 }

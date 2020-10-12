@@ -52,7 +52,7 @@ class Instant_Articles_Comscore {
 		}
 
 		$file_path = plugin_dir_path( __FILE__ ) . 'comscore.js';
-		$js = sprintf( file_get_contents( $file_path ), $comscore_id );
+		$js        = sprintf( file_get_contents( $file_path ), $comscore_id ); // phpcs:ignore WordPressVIPMinimum.VIP.FetchingRemoteData.fileGetContentsUknown
 
 		$code = '<script>' . $js . '</script>';
 

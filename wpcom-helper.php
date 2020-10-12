@@ -5,8 +5,6 @@ use Facebook\InstantArticles\Elements\Analytics;
 // Wrap the wpcom tracking pixel to comply with the FBIA spec
 // https://developers.facebook.com/docs/instant-articles/reference/analytics
 function wpcom_fbia_remove_stats_pixel() {
-	global $post;
-
 	if ( ! defined( 'INSTANT_ARTICLES_SLUG' ) ) {
 		return;
 	}

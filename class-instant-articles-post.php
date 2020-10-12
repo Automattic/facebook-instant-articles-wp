@@ -139,7 +139,7 @@ class Instant_Articles_Post {
 	 */
 	public function has_subtitle() {
 
-		$has_subtitle = false;
+		$has_subtitle = false; // phpcs:ignore WordPressVIPMinimum.Variables.VariableAnalysis.UnusedVariable
 
 		$subtitle = $this->get_the_subtitle();
 
@@ -257,10 +257,10 @@ class Instant_Articles_Post {
 		// If post is draft, clone it to get the eventual permalink,
 		// see http://wordpress.stackexchange.com/a/42988.
 		if ( in_array( $this->_post->post_status, array( 'draft', 'pending', 'auto-draft' ), true ) ) {
-			$post_clone = clone $this->_post;
+			$post_clone              = clone $this->_post;
 			$post_clone->post_status = 'published';
-			$post_clone->post_name = sanitize_title( $post_clone->post_name ? $post_clone->post_name : $post_clone->post_title, $post_clone->ID );
-			$url = get_permalink( $post_clone );
+			$post_clone->post_name   = sanitize_title( $post_clone->post_name ? $post_clone->post_name : $post_clone->post_title, $post_clone->ID );
+			$url                     = get_permalink( $post_clone );
 		} else {
 			$url = get_permalink( $this->_post );
 		}
@@ -277,7 +277,7 @@ class Instant_Articles_Post {
 	public function get_the_content() {
 
 		if ( is_null( $this->_content ) ) {
-			$this->_content = $this->_get_the_content();
+			$this->_content = $this->assemble_content();
 		}
 
 		return $this->_content;
@@ -290,7 +290,7 @@ class Instant_Articles_Post {
 	 * @since 0.1
 	 * @return string The content
 	 */
-	protected function _get_the_content() {
+	protected function assemble_content() {
 
 		// Try to get the content from a transient, but only if the cached version have the same modtime.
 		$cache_mod_time = get_transient( 'instantarticles_mod_' . $this->_post->ID );
@@ -306,12 +306,12 @@ class Instant_Articles_Post {
 
 		// Force $more.
 		$orig_more = $more;
-		$more = 1;
+		$more      = 1; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.OverrideProhibited
 
 		// If we’re not it the loop or otherwise properly setup.
 		$reset_postdata = false;
 		if ( empty( $post ) || $this->_post->ID !== $post->ID ) {
-			$post = get_post( $this->_post->ID );
+			$post = get_post( $this->_post->ID ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.OverrideProhibited
 			setup_postdata( $post );
 			$reset_postdata = true;
 		}
@@ -327,13 +327,14 @@ class Instant_Articles_Post {
 		 */
 
 		// Some people choose to disable wpautop. Due to the Instant Articles spec, we really want it in!
-		if ( ! has_filter( 'the_content', 'wpautop' ) )
+		if ( ! has_filter( 'the_content', 'wpautop' ) ) {
 			add_filter( 'the_content', 'wpautop' );
+		}
 
 		$content = apply_filters( 'the_content', $content );
 
 		// Maybe cleanup some globals after us?
-		$more = $orig_more;
+		$more = $orig_more; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.OverrideProhibited
 		if ( $reset_postdata ) {
 			wp_reset_postdata();
 		}
@@ -341,7 +342,7 @@ class Instant_Articles_Post {
 		// Remove hyperlinks beginning with a # as they cause errors on Facebook (from http://wordpress.stackexchange.com/a/227332/19528)
 		preg_match_all( '!<a[^>]*? href=[\'"]#[^<]+</a>!i', $content, $matches );
 		foreach ( $matches[0] as $link ) {
-			$content = str_replace( $link, strip_tags($link), $content );
+			$content = str_replace( $link, wp_strip_all_tags( $link ), $content );
 		}
 
 		/**
@@ -420,7 +421,7 @@ class Instant_Articles_Post {
 		$wp_user = get_userdata( $this->_post->post_author );
 
 		if ( is_a( $wp_user, 'WP_User' ) ) {
-			$author = new stdClass;
+			$author                = new stdClass();
 			$author->ID            = $wp_user->ID;
 			$author->display_name  = $wp_user->data->display_name;
 			$author->first_name    = $wp_user->first_name;
@@ -461,17 +462,17 @@ class Instant_Articles_Post {
 	public function get_the_featured_image() {
 
 		$image_data = array(
-			'src' => '',
+			'src'     => '',
 			'caption' => '',
 		);
 		if ( has_post_thumbnail( $this->_post->ID ) ) {
 
-			$image_array = wp_get_attachment_image_src( get_post_thumbnail_id( $this->_post->ID ), 'full' );
-			$attachment_id   = get_post_thumbnail_id( $this->_post->ID );
+			$image_array   = wp_get_attachment_image_src( get_post_thumbnail_id( $this->_post->ID ), 'full' );
+			$attachment_id = get_post_thumbnail_id( $this->_post->ID );
 
 			if ( is_array( $image_array ) ) {
 				$image_data['src'] = $image_array[0];
-				$attachment_post = get_post( $attachment_id );
+				$attachment_post   = get_post( $attachment_id );
 				if ( is_a( $attachment_post, 'WP_Post' ) ) {
 					$image_data['caption'] = $attachment_post->post_excerpt;
 				}
@@ -519,9 +520,9 @@ class Instant_Articles_Post {
 
 			$featured_image_data = $this->get_the_featured_image();
 			if ( isset( $featured_image_data['src'] ) && strlen( $featured_image_data['src'] ) ) {
-				$cover_media = Image::create()->withURL($featured_image_data['src']);
-				if( isset( $featured_image_data['caption'] ) && strlen( $featured_image_data['caption'] )) {
-					$cover_media->withCaption(Caption::create()->withTitle($featured_image_data['caption']));
+				$cover_media = Image::create()->withURL( $featured_image_data['src'] );
+				if ( isset( $featured_image_data['caption'] ) && strlen( $featured_image_data['caption'] ) ) {
+					$cover_media->withCaption( Caption::create()->withTitle( $featured_image_data['caption'] ) );
 				}
 			}
 		}
@@ -555,7 +556,7 @@ class Instant_Articles_Post {
 		 * @param string  $category  The first category returned from get_the_category().
 		 * @param int     $post_id   The post ID.
 		 */
-		$category_kicker = apply_filters( 'instant_articles_cover_kicker', $category,  $this->_post->ID );
+		$category_kicker = apply_filters( 'instant_articles_cover_kicker', $category, $this->_post->ID );
 
 		return $category_kicker ? $category_kicker : '';
 	}
@@ -578,7 +579,7 @@ class Instant_Articles_Post {
 		 * @param string  $type     Set to 'video' for video cover. Featured image (image) is default.
 		 * @param int     $post_id  The post ID.
 		 */
-		$type = apply_filters( 'instant_articles_cover_type', $type,  $this->_post->ID );
+		$type = apply_filters( 'instant_articles_cover_type', $type, $this->_post->ID );
 
 		return $type;
 	}
@@ -606,11 +607,11 @@ class Instant_Articles_Post {
 		$date_time_zone = get_option( 'timezone_string' ) ? new DateTimeZone( get_option( 'timezone_string' ) ) : new DateTimeZone( 'UTC' );
 
 		// Initialize transformer
-		$file_path = plugin_dir_path( __FILE__ ) . 'rules-configuration.json';
-		$file_path = apply_filters( 'instant_articles_transformer_rules_configuration_json_file_path', $file_path );
-		$configuration = file_get_contents( $file_path );
+		$file_path     = plugin_dir_path( __FILE__ ) . 'rules-configuration.json';
+		$file_path     = apply_filters( 'instant_articles_transformer_rules_configuration_json_file_path', $file_path );
+		$configuration = file_get_contents( $file_path ); // phpcs:ignore WordPressVIPMinimum.VIP.FetchingRemoteData.fileGetContentsUknown
 
-		$transformer = new Transformer();
+		$transformer       = new Transformer();
 		$this->transformer = $transformer;
 		$transformer->loadRules( $configuration );
 
@@ -646,7 +647,7 @@ class Instant_Articles_Post {
 		}
 
 		if ( $this->has_subtitle() ) {
-			$header->withSubTitle ( $this->get_the_subtitle() ) ;
+			$header->withSubTitle( $this->get_the_subtitle() );
 		}
 
 		$authors = $this->get_the_authors();
@@ -683,7 +684,7 @@ class Instant_Articles_Post {
 		$this->set_appearance_from_settings();
 
 		$the_content = $this->get_the_content();
-		if (!Type::isTextEmpty($the_content)) {
+		if ( ! Type::isTextEmpty( $the_content ) ) {
 			$transformer->transformString( $this->instant_article, $the_content, get_option( 'blog_charset' ) );
 		}
 
@@ -715,13 +716,13 @@ class Instant_Articles_Post {
 
 		$settings_ads = Instant_Articles_Option_Ads::get_option_decoded();
 
-		$width = 300;
+		$width  = 300;
 		$height = 250;
 
 		$dimensions_match = array();
-		$dimensions_raw = isset( $settings_ads['dimensions'] ) ? $settings_ads['dimensions'] : null;
+		$dimensions_raw   = isset( $settings_ads['dimensions'] ) ? $settings_ads['dimensions'] : null;
 		if ( preg_match( '/^(?:\s)*(\d+)x(\d+)(?:\s)*$/', $dimensions_raw, $dimensions_match ) ) {
-			$width = intval( $dimensions_match[1] );
+			$width  = intval( $dimensions_match[1] );
 			$height = intval( $dimensions_match[2] );
 		}
 
@@ -744,7 +745,7 @@ class Instant_Articles_Post {
 						add_query_arg(
 							array(
 								'placement' => $placement_id,
-								'adtype' => 'banner' . $width . 'x' . $height,
+								'adtype'    => 'banner' . $width . 'x' . $height,
 							),
 							'https://www.facebook.com/adnw_request'
 						)
@@ -767,9 +768,9 @@ class Instant_Articles_Post {
 			case 'embed':
 				if ( ! empty( $settings_ads['embed_code'] ) ) {
 
-					$document = new DOMDocument();
-					$fragment = $document->createDocumentFragment();
-					$valid_html = @$fragment->appendXML( $settings_ads['embed_code'] );
+					$document   = new DOMDocument();
+					$fragment   = $document->createDocumentFragment();
+					$valid_html = $fragment->appendXML( $settings_ads['embed_code'] );
 
 					if ( $valid_html ) {
 						$ad->withHTML(
@@ -786,9 +787,9 @@ class Instant_Articles_Post {
 					foreach ( $registered_compat_ads as $compat_id => $compat_info ) {
 						if ( array_key_exists( $compat_id, $registered_compat_ads ) ) {
 
-							$document = new DOMDocument();
-							$fragment = $document->createDocumentFragment();
-							$valid_html = @$fragment->appendXML( $compat_info['payload'] );
+							$document   = new DOMDocument();
+							$fragment   = $document->createDocumentFragment();
+							$valid_html = $fragment->appendXML( $compat_info['payload'] );
 
 							if ( $valid_html ) {
 								$ad = Ad::create()
@@ -820,9 +821,9 @@ class Instant_Articles_Post {
 
 		if ( isset( $settings_analytics['embed_code_enabled'] ) && ! empty( $settings_analytics['embed_code'] ) ) {
 
-			$document = new DOMDocument();
-			$fragment = $document->createDocumentFragment();
-			$valid_html = @$fragment->appendXML( $settings_analytics['embed_code'] );
+			$document   = new DOMDocument();
+			$fragment   = $document->createDocumentFragment();
+			$valid_html = $fragment->appendXML( $settings_analytics['embed_code'] );
 
 			if ( $valid_html ) {
 				$this->instant_article
@@ -836,14 +837,14 @@ class Instant_Articles_Post {
 		}
 
 		if ( ! empty( $settings_analytics['integrations'] ) ) {
-			$settings_analytics_compats = $settings_analytics['integrations'];
+			$settings_analytics_compats  = $settings_analytics['integrations'];
 			$registered_compat_analytics = Instant_Articles_Option::get_registered_compat( 'instant_articles_compat_registry_analytics' );
 			foreach ( $registered_compat_analytics as $compat_id => $compat_info ) {
 				if ( in_array( $compat_id, $settings_analytics_compats, true ) ) {
 
-					$document = new DOMDocument();
-					$fragment = $document->createDocumentFragment();
-					$valid_html = @$fragment->appendXML( $compat_info['payload'] );
+					$document   = new DOMDocument();
+					$fragment   = $document->createDocumentFragment();
+					$valid_html = $fragment->appendXML( $compat_info['payload'] );
 
 					if ( $valid_html ) {
 						$this->instant_article
@@ -868,7 +869,7 @@ class Instant_Articles_Post {
 		if ( $cache ) {
 			// We use 'yes' or 'no' to avoid booleans because
 			// get_post_meta() returns false when the key is not found
-			return ( $cache === 'yes' );
+			return ( 'yes' === $cache );
 		}
 
 		$instant_article = $this->to_instant_article();
@@ -894,10 +895,10 @@ class Instant_Articles_Post {
 		if ( $cache ) {
 			// We use 'yes' or 'no' to avoid booleans because
 			// get_post_meta() returns false when the key is not found
-			return ( $cache === 'yes' );
+			return ( 'yes' === $cache );
 		}
 
-		$instant_article = $this->to_instant_article();
+		$instant_article = $this->to_instant_article(); // phpcs:ignore WordPressVIPMinimum.Variables.VariableAnalysis.UnusedVariable
 		if ( count( $this->transformer->getWarnings() ) > 0 ) {
 			update_post_meta( $this->get_the_id(), '_has_warnings_after_transformation', 'yes' );
 			return true;
@@ -912,7 +913,7 @@ class Instant_Articles_Post {
 	public function should_submit_post() {
 
 		$fb_page_settings = Instant_Articles_Option_FB_Page::get_option_decoded();
-		if ( isset( $fb_page_settings[ 'page_id' ] ) && !$fb_page_settings[ 'page_id' ] ) {
+		if ( isset( $fb_page_settings['page_id'] ) && ! $fb_page_settings['page_id'] ) {
 			return false;
 		}
 
@@ -930,7 +931,7 @@ class Instant_Articles_Post {
 
 		// Only process posts
 		$post_types = apply_filters( 'instant_articles_post_types', array( 'post' ) );
-		if ( ! in_array( $post->post_type, $post_types ) ) {
+		if ( ! in_array( $post->post_type, $post_types, true ) ) {
 			return false;
 		}
 
@@ -954,16 +955,16 @@ class Instant_Articles_Post {
 
 		// Don't process if contains warnings and blocker flag for transformation warnings is turned on.
 		$publishing_settings = Instant_Articles_Option_Publishing::get_option_decoded();
-		$force_submit = get_post_meta( $post->ID, IA_PLUGIN_FORCE_SUBMIT_KEY, true );
+		$force_submit        = get_post_meta( $post->ID, IA_PLUGIN_FORCE_SUBMIT_KEY, true );
 		if ( $this->has_warnings_after_transformation()
-		  && ( ! isset( $publishing_settings[ 'publish_with_warnings' ] ) || ! $publishing_settings[ 'publish_with_warnings' ] )
+			&& ( ! isset( $publishing_settings['publish_with_warnings'] ) || ! $publishing_settings['publish_with_warnings'] )
 			&& ( ! $force_submit )
 			) {
 			return false;
 		}
 
 		return true;
-	 }
+	}
 
 	/**
 	 * Apply appearance settings for an InstantArticle.
@@ -988,14 +989,15 @@ class Instant_Articles_Post {
 		 */
 		$article_style = apply_filters( 'instant_articles_style', $article_style, $this );
 
-		$this->instant_article->withStyle($article_style);
+		$this->instant_article->withStyle( $article_style );
 
 		if ( isset( $settings['copyright'] ) && ! empty( $settings['copyright'] ) ) {
 			$footer = Footer::create();
 			$this->transformer->transformString(
 				$footer,
 				'<small>' . $settings['copyright'] . '</small>',
-				get_option( 'blog_charset' ) );
+				get_option( 'blog_charset' )
+			);
 			$this->instant_article->withFooter( $footer );
 		}
 

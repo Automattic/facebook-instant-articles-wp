@@ -14,64 +14,64 @@ use Facebook\InstantArticles\Elements\Header;
 use Facebook\InstantArticles\Elements\Time;
 use Facebook\InstantArticles\Elements\Author;
 
-class WPTransformerTest extends \PHPUnit_Framework_TestCase
-{
-    public function testTransformerLikeWPContent()
-    {
-        $json_file = file_get_contents(__DIR__ . '/wp-rules.json');
+class WPTransformerTest extends \PHPUnit_Framework_TestCase {
 
-        $instant_article = InstantArticle::create();
-        $transformer = new Transformer();
-        $transformer->loadRules($json_file);
+	public function testTransformerLikeWPContent() {
+		$json_file = file_get_contents( __DIR__ . '/wp-rules.json' );
 
-        $html_file = file_get_contents(__DIR__ . '/wp.html');
+		$instant_article = InstantArticle::create();
+		$transformer     = new Transformer();
+		$transformer->loadRules( $json_file );
 
-        libxml_use_internal_errors(true);
-        $document = new \DOMDocument();
-        $document->loadHTML($html_file);
-        libxml_use_internal_errors(false);
+		$html_file = file_get_contents( __DIR__ . '/wp.html' );
 
-        $instant_article
-            ->withCanonicalURL('http://localhost/article')
-            ->withHeader(
-                Header::create()
-                    ->withTitle('Peace on <b>earth</b>')
-                    ->addAuthor(Author::create()->withName('bill'))
-                    ->withPublishTime(Time::create(Time::PUBLISHED)->withDatetime(
-                        \DateTime::createFromFormat(
-                            'j-M-Y G:i:s',
-                            '12-Apr-2016 19:46:51'
-                        )
-                    ))
-            );
+		libxml_use_internal_errors( true );
+		$document = new \DOMDocument();
+		$document->loadHTML( $html_file );
+		libxml_use_internal_errors( false );
 
-        $transformer->transform($instant_article, $document);
-        $instant_article->addMetaProperty('op:generator:version', '1.0.0');
-        $instant_article->addMetaProperty('op:generator:transformer:version', '1.0.0');
-        $result = $instant_article->render('', true)."\n";
-        $expected = file_get_contents(__DIR__ . '/wp-ia.xml');
+		$instant_article
+			->withCanonicalURL( 'http://localhost/article' )
+			->withHeader(
+				Header::create()
+					->withTitle( 'Peace on <b>earth</b>' )
+					->addAuthor( Author::create()->withName( 'bill' ) )
+					->withPublishTime(
+						Time::create( Time::PUBLISHED )->withDatetime(
+							\DateTime::createFromFormat(
+								'j-M-Y G:i:s',
+								'12-Apr-2016 19:46:51'
+							)
+						)
+					)
+			);
 
-        $this->assertEquals($expected, $result);
-        // there must be 3 warnings related to <img> inside <li> that is not supported by IA
-        $this->assertEquals(3, count($transformer->getWarnings()));
-    }
+		$transformer->transform( $instant_article, $document );
+		$instant_article->addMetaProperty( 'op:generator:version', '1.0.0' );
+		$instant_article->addMetaProperty( 'op:generator:transformer:version', '1.0.0' );
+		$result   = $instant_article->render( '', true ) . "\n";
+		$expected = file_get_contents( __DIR__ . '/wp-ia.xml' );
 
-    public function testTitleTransformedWithBold()
-    {
-        $transformer = new Transformer();
-        $json_file = file_get_contents(__DIR__ . '/wp-rules.json');
-        $transformer->loadRules($json_file);
+		$this->assertEquals( $expected, $result );
+		// there must be 3 warnings related to <img> inside <li> that is not supported by IA
+		$this->assertEquals( 3, count( $transformer->getWarnings() ) );
+	}
 
-        $title_html_string = '<?xml encoding="utf-8" ?><h1>Title <b>in bold</b></h1>';
+	public function testTitleTransformedWithBold() {
+		$transformer = new Transformer();
+		$json_file   = file_get_contents( __DIR__ . '/wp-rules.json' );
+		$transformer->loadRules( $json_file );
 
-        libxml_use_internal_errors(true);
-        $document = new \DOMDocument();
-        $document->loadHtml($title_html_string);
-        libxml_use_internal_errors(false);
+		$title_html_string = '<?xml encoding="utf-8" ?><h1>Title <b>in bold</b></h1>';
 
-        $header = Header::create();
-        $transformer->transform($header, $document);
+		libxml_use_internal_errors( true );
+		$document = new \DOMDocument();
+		$document->loadHtml( $title_html_string );
+		libxml_use_internal_errors( false );
 
-        $this->assertEquals('<h1>Title <b>in bold</b></h1>', $header->getTitle()->render());
-    }
+		$header = Header::create();
+		$transformer->transform( $header, $document );
+
+		$this->assertEquals( '<h1>Title <b>in bold</b></h1>', $header->getTitle()->render() );
+	}
 }

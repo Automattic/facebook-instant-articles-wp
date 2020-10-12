@@ -15,9 +15,12 @@ $last_modified = null;
 <rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">
 	<channel>
 		<title><?php bloginfo_rss( 'name' ); ?> - <?php esc_html_e( 'Instant Articles', 'instant-articles' ); ?></title>
-		<link><?php bloginfo_rss( 'url' ) ?></link>
-		<description><?php bloginfo_rss( 'description' ) ?></description>
-		<?php while ( have_posts() ) : the_post(); ?>
+		<link><?php bloginfo_rss( 'url' ); ?></link>
+		<description><?php bloginfo_rss( 'description' ); ?></description>
+		<?php 
+		while ( have_posts() ) :
+			the_post(); 
+			?>
 			<?php
 			$instant_article_post = new Instant_Articles_Post( get_post( get_the_id() ) );
 

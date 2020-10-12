@@ -9,10 +9,10 @@ class Instant_Articles_Yoast_SEO {
 	/**
 	 * Init the compat layer.
 	 */
-	function init() {
+	public function init() {
 		add_filter( 'instant_articles_featured_image', array( $this, 'override_featured_image' ), 10, 2 );
 		// Hook in after other author modifications (like the Co-Authors Plus plugin).
-		add_filter( 'instant_articles_authors', array( $this, 'user_url' ), 11 , 2 );
+		add_filter( 'instant_articles_authors', array( $this, 'user_url' ), 11, 2 );
 	}
 
 	/**
@@ -23,7 +23,7 @@ class Instant_Articles_Yoast_SEO {
 	 * @param int   $post_id  The instant article post.
 	 * @return array The filtered image data.
 	 */
-	function override_featured_image( $image_data, $post_id ) {
+	public function override_featured_image( $image_data, $post_id ) {
 
 		$image_url = get_post_meta( $post_id, '_yoast_wpseo_opengraph-image', true );
 
@@ -48,13 +48,13 @@ class Instant_Articles_Yoast_SEO {
 	 * @param int   $post_id  The instant article post.
 	 * @return array The filtered authors.
 	 */
-	function user_url( $authors, $post_id ) {
+	public function user_url( $authors, $post_id ) {
 
 		foreach ( $authors as $author ) {
 			if ( ! strlen( $author->user_url ) ) {
 				$facebook_profile_url = get_user_meta( $author->ID, 'facebook', true );
 				if ( strlen( $facebook_profile_url ) ) {
-					$author->user_url = $facebook_profile_url;
+					$author->user_url     = $facebook_profile_url;
 					$author->user_url_rel = 'facebook';
 				}
 			}

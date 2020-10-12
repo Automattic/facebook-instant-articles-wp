@@ -1,36 +1,37 @@
 {
-  "name": "automattic/facebook-instant-articles-wp",
-  "type": "wordpress-plugin",
-  "license": "GPL-2.0",
-  "description": "Add support for Instant Articles for Facebook to your WordPress site.",
-  "authors":
-  [
-    {
-      "name": "Automattic",
-      "homepage": "https://automattic.com/"
-    },
-    {
-      "name": "Dekode",
-      "homepage": "https://dekode.no/"
-    },
-    {
-      "name": "Facebook",
-      "homepage": "https://github.com/facebook"
-    }
-  ],
-  "keywords":
-  [
-    "wordpress", "facebook", "instant", "articles", "amp"
-  ],
-  "require":
-  {
-    "php": ">=5.4",
-    "facebook/facebook-instant-articles-sdk-php": "^1.10.0",
-    "facebook/facebook-instant-articles-sdk-extensions-in-php": "^0.2.1",
-    "symfony/css-selector": "2.8.*",
-    "facebook/graph-sdk": "^5.6"
-  },
-  "require-dev": {
-    "wp-coding-standards/wpcs": "*"
-  }
+	"name": "automattic/facebook-instant-articles-wp",
+	"type": "wordpress-plugin",
+	"license": "GPL-2.0",
+	"description": "Add support for Instant Articles for Facebook to your WordPress site.",
+	"authors": [
+		{
+			"name": "Automattic",
+			"homepage": "https://automattic.com/"
+		},
+		{
+			"name": "Dekode",
+			"homepage": "https://dekode.no/"
+		},
+		{
+			"name": "Facebook",
+			"homepage": "https://github.com/facebook"
+		}
+	],
+	"keywords": [
+		"wordpress",
+		"facebook",
+		"instant",
+		"articles",
+		"amp"
+	],
+	"require": {
+		"php": ">=5.4",
+		"facebook/facebook-instant-articles-sdk-php": "^1.10.0",
+		"facebook/facebook-instant-articles-sdk-extensions-in-php": "^0.2.1",
+		"symfony/css-selector": "2.8.*",
+		"facebook/graph-sdk": "^5.6"
+	},
+	"require-dev": {
+		"wp-coding-standards/wpcs": "*"
+	}
 }

@@ -17,7 +17,7 @@ class Instant_Articles_Google_Analytics_For_WordPress {
 	/**
 	 * Init the compat layer
 	 */
-	function init() {
+	public function init() {
 		add_action( 'instant_articles_compat_registry_analytics', array( $this, 'add_to_registry' ) );
 	}
 
@@ -28,7 +28,7 @@ class Instant_Articles_Google_Analytics_For_WordPress {
 	 * @since 0.3
 	 * @param array $registry Reference param. The registry where it will be stored.
 	 */
-	function add_to_registry( &$registry ) {
+	public function add_to_registry( &$registry ) {
 
 		$display_name = 'Google Analytics by MonsterInsights';
 
@@ -37,7 +37,7 @@ class Instant_Articles_Google_Analytics_For_WordPress {
 		$embed_code = $this->get_raw_embed_code();
 
 		$registry[ $identifier ] = array(
-			'name' => $display_name,
+			'name'    => $display_name,
 			'payload' => $embed_code,
 		);
 	}
@@ -47,7 +47,7 @@ class Instant_Articles_Google_Analytics_For_WordPress {
 	 *
 	 * @since 0.3
 	 */
-	function get_raw_embed_code() {
+	public function get_raw_embed_code() {
 
 		ob_start();
 
@@ -57,9 +57,9 @@ class Instant_Articles_Google_Analytics_For_WordPress {
 			$options = Yoast_GA_Options::instance()->options;
 
 			if ( isset( $options['enable_universal'] ) && 1 === intval( $options['enable_universal'] ) ) {
-				$tracker = new Yoast_GA_Universal;
+				$tracker = new Yoast_GA_Universal();
 			} else {
-				$tracker = new Yoast_GA_JS;
+				$tracker = new Yoast_GA_JS();
 			}
 
 			$tracker->tracking();

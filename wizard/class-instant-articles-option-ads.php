@@ -7,7 +7,7 @@
  * @package default
  */
 
-require_once( dirname( __FILE__ ) . '/class-instant-articles-option.php' );
+require_once dirname( __FILE__ ) . '/class-instant-articles-option.php';
 
 /**
  * Configuration class for Ads.
@@ -17,55 +17,55 @@ class Instant_Articles_Option_Ads extends Instant_Articles_Option {
 	const OPTION_KEY = 'instant-articles-option-ads';
 
 	public static $sections = array(
-		'title' => 'Ads',
+		'title'       => 'Ads',
 		'description' => '<p>Choose your preferred method for displaying ads in your Instant Articles and input the code in the boxes below. Learn more about your options for <a href="https://developers.facebook.com/docs/instant-articles/ads-analytics" target="_blank">advertising in Instant Articles</a>.</p>',
 	);
 
 	public static $fields = array(
 
-		'ad_source' => array(
-			'label' => 'Ad Type',
-			'description' => 'This plugin will automatically place the ads within your articles.',
-			'render' => array( 'Instant_Articles_Option_Ads', 'custom_render_ad_source' ),
+		'ad_source'        => array(
+			'label'          => 'Ad Type',
+			'description'    => 'This plugin will automatically place the ads within your articles.',
+			'render'         => array( 'Instant_Articles_Option_Ads', 'custom_render_ad_source' ),
 			'select_options' => array(
-				'none' => 'None',
-				'fan' => 'Facebook Audience Network',
+				'none'   => 'None',
+				'fan'    => 'Facebook Audience Network',
 				'iframe' => 'Custom iframe URL',
-				'embed' => 'Custom Embed Code',
+				'embed'  => 'Custom Embed Code',
 			),
-			'default' => 'none',
+			'default'        => 'none',
 		),
 
 		'fan_placement_id' => array(
-			'label' => 'Audience Network Placement ID',
+			'label'       => 'Audience Network Placement ID',
 			'description' => 'Find your <a href="https://developers.facebook.com/docs/audience-network/instantarticles/banner" target="_blank">Placement ID</a> for Facebook Audience Network on your app\'s Audience Network Portal',
-			'default' => null,
+			'default'     => null,
 		),
 
-		'iframe_url' => array(
-			'label' => 'Source URL',
+		'iframe_url'       => array(
+			'label'       => 'Source URL',
 			'placeholder' => '//ad-server.com/my-ad',
 			'description' => 'Note: Instant Articles only supports Direct Sold ads. No programmatic ad networks, other than Facebook\'s Audience Network, are permitted.',
-			'default' => '',
+			'default'     => '',
 		),
 
-		'embed_code' => array(
-			'label' => 'Embed Code',
-			'render' => 'textarea',
-			'description' => 'Add code to be used for displayed ads in your Instant Articles.',
-			'default' => '',
-			'placeholder' => '<script>...</script>',
+		'embed_code'       => array(
+			'label'         => 'Embed Code',
+			'render'        => 'textarea',
+			'description'   => 'Add code to be used for displayed ads in your Instant Articles.',
+			'default'       => '',
+			'placeholder'   => '<script>...</script>',
 			'double_encode' => true,
 		),
 
-		'dimensions' => array(
-			'label' => 'Ad Dimensions',
-			'render' => 'select',
+		'dimensions'       => array(
+			'label'          => 'Ad Dimensions',
+			'render'         => 'select',
 			'select_options' => array(
 				'300x250' => 'Large (300 x 250)',
-				'320x50' => 'Small (320 x 50)',
+				'320x50'  => 'Small (320 x 50)',
 			),
-			'default' => '300x250',
+			'default'        => '300x250',
 		),
 
 	);
@@ -81,13 +81,17 @@ class Instant_Articles_Option_Ads extends Instant_Articles_Option {
 			self::$sections,
 			self::$fields
 		);
-		wp_localize_script( 'instant-articles-option-ads', 'INSTANT_ARTICLES_OPTION_ADS', array(
-			'option_field_id_source'     => self::OPTION_KEY . '-ad_source',
-			'option_field_id_fan'        => self::OPTION_KEY . '-fan_placement_id',
-			'option_field_id_iframe'     => self::OPTION_KEY . '-iframe_url',
-			'option_field_id_embed'      => self::OPTION_KEY . '-embed_code',
-			'option_field_id_dimensions' => self::OPTION_KEY . '-dimensions',
-		) );
+		wp_localize_script(
+			'instant-articles-option-ads',
+			'INSTANT_ARTICLES_OPTION_ADS',
+			array(
+				'option_field_id_source'     => self::OPTION_KEY . '-ad_source',
+				'option_field_id_fan'        => self::OPTION_KEY . '-fan_placement_id',
+				'option_field_id_iframe'     => self::OPTION_KEY . '-iframe_url',
+				'option_field_id_embed'      => self::OPTION_KEY . '-embed_code',
+				'option_field_id_dimensions' => self::OPTION_KEY . '-dimensions',
+			)
+		);
 	}
 
 	/**
@@ -97,7 +101,7 @@ class Instant_Articles_Option_Ads extends Instant_Articles_Option {
 	 * @since 0.4
 	 */
 	public static function custom_render_ad_source( $args ) {
-		$id = $args['label_for'];
+		$id   = $args['label_for'];
 		$name = $args['serialized_with_group'] . '[ad_source]';
 
 		$description = isset( $args['description'] )
@@ -109,7 +113,7 @@ class Instant_Articles_Option_Ads extends Instant_Articles_Option {
 		<?php foreach ( $args['select_options'] as $ad_source_key => $ad_source_name ) : ?>
 			<option
 				value="<?php echo esc_attr( $ad_source_key ); ?>"
-				<?php echo selected( self::$settings['ad_source'], $ad_source_key ) ?>
+				<?php echo selected( self::$settings['ad_source'], $ad_source_key ); ?>
 			>
 			<?php echo esc_html( $ad_source_name ); ?>
 			</option>
@@ -119,12 +123,12 @@ class Instant_Articles_Option_Ads extends Instant_Articles_Option {
 		$compat_plugins = parent::get_registered_compat( 'instant_articles_compat_registry_ads' );
 		asort( $compat_plugins );
 		if ( count( $compat_plugins ) > 0 ) :
-		?>
+			?>
 			<optgroup label="From Supported Plugins">
 			<?php foreach ( $compat_plugins as $ad_source_key => $ad_source_info ) : ?>
 				<option
 					value="<?php echo esc_attr( $ad_source_key ); ?>"
-					<?php echo selected( self::$settings['ad_source'], $ad_source_key ) ?>
+					<?php echo selected( self::$settings['ad_source'], $ad_source_key ); ?>
 				>
 				<?php echo esc_html( $ad_source_info['name'] ); ?>
 				</option>
@@ -162,10 +166,10 @@ class Instant_Articles_Option_Ads extends Instant_Articles_Option {
 						'instant_articles_compat_registry_ads'
 					);
 
-					foreach ( $field['select_options'] as $option_id => $option_info ) {
+					foreach ( $field['select_options'] as $option_id ) {
 						$all_options[] = $option_id;
 					}
-					foreach ( $registered_compat_ads as $compat_id => $compat_info ) {
+					foreach ( $registered_compat_ads as $compat_id ) {
 						$all_options[] = $compat_id;
 					}
 
@@ -177,7 +181,7 @@ class Instant_Articles_Option_Ads extends Instant_Articles_Option {
 							'Invalid Ad Source'
 						);
 					}
-				break;
+					break;
 
 				case 'fan_placement_id':
 					if ( isset( $field_values['ad_source'] ) && 'fan' === $field_values['ad_source'] ) {
@@ -190,7 +194,7 @@ class Instant_Articles_Option_Ads extends Instant_Articles_Option {
 							$field_values[ $field_id ] = $field['default'];
 						}
 					}
-				break;
+					break;
 
 				case 'iframe_url':
 					if ( isset( $field_values['ad_source'] ) && 'iframe' === $field_values['ad_source'] ) {
@@ -199,7 +203,7 @@ class Instant_Articles_Option_Ads extends Instant_Articles_Option {
 							// Allow URLs without protocol prefix
 							$url = 'http:' . $url;
 						}
-						$url = filter_var( $url , FILTER_VALIDATE_URL );
+						$url = filter_var( $url, FILTER_VALIDATE_URL );
 						if ( ! $url ) {
 							$field_values[ $field_id ] = $field['default'];
 							add_settings_error(
@@ -209,13 +213,13 @@ class Instant_Articles_Option_Ads extends Instant_Articles_Option {
 							);
 						}
 					}
-				break;
+					break;
 
 				case 'embed_code':
 					if ( isset( $field_values['ad_source'] ) && 'embed' === $field_values['ad_source'] ) {
 						$document = new DOMDocument();
 						$fragment = $document->createDocumentFragment();
-						if ( ! @$fragment->appendXML( $field_values[ $field_id ] ) ) {
+						if ( ! $fragment->appendXML( $field_values[ $field_id ] ) ) {
 							add_settings_error(
 								'embed_code',
 								'invalid_markup',
@@ -223,7 +227,7 @@ class Instant_Articles_Option_Ads extends Instant_Articles_Option {
 							);
 						}
 					}
-				break;
+					break;
 
 				case 'dimensions':
 					if ( isset( $field_values['ad_source'] ) && 'none' !== $field_values['ad_source'] ) {
@@ -236,7 +240,7 @@ class Instant_Articles_Option_Ads extends Instant_Articles_Option {
 							);
 						}
 					}
-				break;
+					break;
 			}
 		}
 

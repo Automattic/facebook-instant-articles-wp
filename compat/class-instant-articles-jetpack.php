@@ -12,9 +12,9 @@ class Instant_Articles_Jetpack {
 	 * Init the compat layer
 	 *
 	 */
-	function init() {
-		$this->_fix_youtube_embed();
-		$this->_fix_facebook_embed();
+	public function init() {
+		$this->fix_youtube_embed();
+		$this->fix_facebook_embed();
 		add_filter( 'instant_articles_transformer_rules_loaded', array( 'Instant_Articles_Jetpack', 'transformer_loaded' ) );
 	}
 
@@ -22,7 +22,7 @@ class Instant_Articles_Jetpack {
 	 * Remove the YouTube embed handling in Jetpack
 	 *
 	 */
-	private function _fix_youtube_embed() {
+	private function fix_youtube_embed() {
 
 		/**
 		 * Do not "fix" bare URLs on their own line of the form
@@ -37,12 +37,12 @@ class Instant_Articles_Jetpack {
 	 * Fix the Facebook embed handling
 	 *
 	 */
-	private function _fix_facebook_embed() {
+	private function fix_facebook_embed() {
 
 		// Don't try to fix facebook embeds unless we're in Instant Articles context.
 		// This prevents mangled output on frontend.
 		if ( ! is_transforming_instant_article() ) {
-		    return;
+			return;
 		}
 
 		// All of these are registered in jetpack/modules/shortcodes/facebook.php
@@ -85,13 +85,13 @@ class Instant_Articles_Jetpack {
 			$locale = 'en_US';
 		}
 
-		return '<figure class="op-interactive"><iframe><script src="https://connect.facebook.net/' . $locale . '/sdk.js#xfbml=1&amp;version=v2.6" async></script><div class="fb-post" data-href="' . esc_url( $url ) . '"></div></iframe></figure>';
+		return '<figure class="op-interactive"><iframe><script src="https://connect.facebook.net/' . $locale . '/sdk.js#xfbml=1&amp;version=v2.6" async></script><div class="fb-post" data-href="' . esc_url( $url ) . '"></div></iframe></figure>'; // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript
 	}
 
 	public static function transformer_loaded( $transformer ) {
 		// Appends more rules to transformer
-		$file_path = plugin_dir_path( __FILE__ ) . 'jetpack-rules-configuration.json';
-		$configuration = file_get_contents( $file_path );
+		$file_path     = plugin_dir_path( __FILE__ ) . 'jetpack-rules-configuration.json';
+		$configuration = file_get_contents( $file_path ); // phpcs:ignore WordPressVIPMinimum.VIP.FetchingRemoteData.fileGetContentsUknown
 		$transformer->loadRules( $configuration );
 
 		return $transformer;

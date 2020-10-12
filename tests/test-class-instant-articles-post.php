@@ -7,7 +7,7 @@
  * @package default
  */
 
-require_once( './class-instant-articles-post.php' );
+require_once dirname( __DIR__ ) . '/class-instant-articles-post.php';
 
 /**
  * Test class responsible for constructing article content
@@ -19,17 +19,18 @@ class InstantArticlesPost extends WP_UnitTestCase {
 	protected $post_id;
 
 	public function setup() {
-		$user_id = $this->factory->user->create();
-		$post = $this->factory->post->create_and_get( array(
-			'post_author' => $user_id,
-			'post_title' => 'Article title',
-			'post_content' => 'something',
-			'post_excerpt' => 'This is the excerpt.',
-			'post_date' => '',
-			'post_modified' => '',
+		$user_id                     = $this->factory->user->create();
+		$post                        = $this->factory->post->create_and_get(
+			array(
+				'post_author'   => $user_id,
+				'post_title'    => 'Article title',
+				'post_content'  => 'something',
+				'post_excerpt'  => 'This is the excerpt.',
+				'post_date'     => '',
+				'post_modified' => '',
 			)
 		);
-		$this->post_id = $post->ID;
+		$this->post_id               = $post->ID;
 		$this->instant_articles_post = new Instant_Articles_Post( $post );
 	}
 
@@ -40,8 +41,8 @@ class InstantArticlesPost extends WP_UnitTestCase {
 	public function testGetPostFields() {
 
 		$this->assertEquals( 'Article title', $this->instant_articles_post->get_the_title() );
-		$this->assertEquals( 'Article title',  $this->instant_articles_post->get_the_title_rss() );
-		$this->assertEquals( 'http://' . WP_TESTS_DOMAIN . '/?p=' . $this->post_id,  $this->instant_articles_post->get_canonical_url() );
+		$this->assertEquals( 'Article title', $this->instant_articles_post->get_the_title_rss() );
+		$this->assertEquals( 'http://' . WP_TESTS_DOMAIN . '/?p=' . $this->post_id, $this->instant_articles_post->get_canonical_url() );
 		$this->assertTrue( is_string( $this->instant_articles_post->get_the_excerpt() ), 'Expected string assertion failed.' );
 		$this->assertTrue( is_string( $this->instant_articles_post->get_the_excerpt_rss() ), 'Expected string assertion failed.' );
 	}

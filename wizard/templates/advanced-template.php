@@ -7,7 +7,7 @@
  * @package default
  */
 
-	?>
+?>
 <?php if ( ! $ajax ) : ?>
 	<h1>Facebook Instant Articles Settings</h1>
 	<div id="instant_articles_wizard_messages"><?php settings_errors(); ?></div>
@@ -21,7 +21,11 @@
 						<?php settings_fields( Instant_Articles_Option::PAGE_OPTION_GROUP ); ?>
 						<?php do_settings_sections( Instant_Articles_Option_FB_Page::OPTION_KEY ); ?>
 						<?php $fb_page_settings = Instant_Articles_Option_FB_Page::get_option_decoded(); ?>
-						<div <?php if ( isset( $fb_page_settings[ 'page_id' ] ) && ! $fb_page_settings[ 'page_id' ] ) : ?>style="display: none;"<?php endif; ?>>
+						<div 
+						<?php 
+						if ( isset( $fb_page_settings['page_id'] ) && ! $fb_page_settings['page_id'] ) :
+							?>
+							style="display: none;"<?php endif; ?>>
 							<hr />
 							<?php do_settings_sections( Instant_Articles_Option_FB_App::OPTION_KEY ); ?>
 							<hr />

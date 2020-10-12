@@ -18,7 +18,7 @@ use Facebook\InstantArticles\Client\ServerMessage;
 </a>
 <?php endif; ?>
 
-<?php if ( $adapter->should_submit_post()  ) : ?>
+<?php if ( $adapter->should_submit_post() ) : ?>
 <p>
 	<b>
 		<span class="dashicons dashicons-yes"></span>
@@ -58,7 +58,7 @@ use Facebook\InstantArticles\Client\ServerMessage;
 	</b>
 </p>
 <hr>
-<?php elseif ( ! $fb_page_settings[ "page_id" ] ) : ?>
+<?php elseif ( ! $fb_page_settings['page_id'] ) : ?>
 <p>
 	<b>
 		<span class="dashicons dashicons-no-alt"></span>
@@ -109,7 +109,7 @@ use Facebook\InstantArticles\Client\ServerMessage;
 	<?php if ( ! $publish_with_warnings ) : ?>
 		<hr />
 		<p>
-			<input type="checkbox" id="instant_articles_force_submit" data-security="<?php echo $ajax_nonce; ?>" <?php checked( $force_submit , 1 ); ?> />
+			<input type="checkbox" id="instant_articles_force_submit" data-security="<?php echo esc_attr( $ajax_nonce ); ?>" <?php checked( $force_submit, 1 ); ?> />
 			Submit this article even with warnings
 		</p>
 	<?php endif; ?>
