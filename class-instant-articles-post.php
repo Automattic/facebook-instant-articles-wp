@@ -725,12 +725,27 @@ class Instant_Articles_Post {
 			$height = intval( $dimensions_match[2] );
 		}
 
+		$source_of_ad = isset( $settings_ads['ad_source'] ) ? $settings_ads['ad_source'] : 'none';
+
+		$ad = $this->get_ads_for_ad_source($source_of_ad, $width, $height);
+
+		// Hook for Ads
+		if( has_filter('instant_articles_loading_ads') ){
+			$ad = apply_filters('instant_articles_loading_ads', $ad);
+		}
+		$header->addAd( $ad );
+
+		$this->instant_article->enableAutomaticAdPlacement();
+	}
+
+	public function get_ads_for_ad_source($source_of_ad, $width, $height) {
 		$ad = Ad::create()
 			->enableDefaultForReuse()
 			->withWidth( $width )
 			->withHeight( $height );
 
-		$source_of_ad = isset( $settings_ads['ad_source'] ) ? $settings_ads['ad_source'] : 'none';
+		$settings_ads = Instant_Articles_Option_Ads::get_option_decoded();
+
 		switch ( $source_of_ad ) {
 
 			case 'none':
@@ -739,6 +754,11 @@ class Instant_Articles_Post {
 			case 'fan':
 				if ( ! empty( $settings_ads['fan_placement_id'] ) ) {
 					$placement_id = $settings_ads['fan_placement_id'];
+
+					// Hook for placement ID
+					if( has_filter('instant_articles_ads_placement_id') ){
+						$placement_id = apply_filters('instant_articles_ads_placement_id', $placement_id);
+					}
 
 					$ad->withSource(
 						add_query_arg(
@@ -749,8 +769,6 @@ class Instant_Articles_Post {
 							'https://www.facebook.com/adnw_request'
 						)
 					);
-
-					$header->addAd( $ad );
 				}
 				break;
 
@@ -759,8 +777,6 @@ class Instant_Articles_Post {
 					$ad->withSource(
 						$settings_ads['iframe_url']
 					);
-
-					$header->addAd( $ad );
 				}
 				break;
 
@@ -775,7 +791,6 @@ class Instant_Articles_Post {
 						$ad->withHTML(
 							$fragment
 						);
-						$header->addAd( $ad );
 					}
 				}
 				break;
@@ -798,16 +813,13 @@ class Instant_Articles_Post {
 									->withHTML(
 										$fragment
 									);
-
-								$header->addAd( $ad );
 							}
 						}
 					}
 				}
 				break;
 		}
-
-		$this->instant_article->enableAutomaticAdPlacement();
+		return $ad;
 	}
 
 	/**
