@@ -504,28 +504,22 @@ class Instant_Articles_Post {
 
 		$cover_media = Image::create();
 
-
-		// If someone else is handling this, let them. Otherwise fall back to us trying to use the featured image.
-		if ( has_filter( 'instant_articles_cover_media' ) ) {
-			/**
-			 * Filter the cover media.
-			 *
-			 * @since 0.1
-			 * @param Image     $cover_media  The cover media object.
-			 * @param int       $post_id      The current post ID.
-			 */
-			$cover_media = apply_filters( 'instant_articles_cover_media', $cover_media, $this->_post->ID );
-		} else {
-
-			$featured_image_data = $this->get_the_featured_image();
-			if ( isset( $featured_image_data['src'] ) && strlen( $featured_image_data['src'] ) ) {
-				$cover_media = Image::create()->withURL($featured_image_data['src']);
-				if( isset( $featured_image_data['caption'] ) && strlen( $featured_image_data['caption'] )) {
-					$cover_media->withCaption(Caption::create()->withTitle($featured_image_data['caption']));
-				}
+		$featured_image_data = $this->get_the_featured_image();
+		if ( isset( $featured_image_data['src'] ) && strlen( $featured_image_data['src'] ) ) {
+			$cover_media = Image::create()->withURL($featured_image_data['src']);
+			if( isset( $featured_image_data['caption'] ) && strlen( $featured_image_data['caption'] )) {
+				$cover_media->withCaption(Caption::create()->withTitle($featured_image_data['caption']));
 			}
 		}
 
+		/**
+		 * Filter the cover media
+		 *
+		 * @since 0.1
+		 * @param Image     $cover_media  The cover media object.
+		 * @param int       $post_id      The current post ID.
+		 */
+        $cover_media = apply_filters( 'instant_articles_cover_media', $cover_media, $this->_post->ID );
 		return $cover_media;
 	}
 
