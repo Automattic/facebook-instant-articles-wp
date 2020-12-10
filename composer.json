@@ -31,6 +31,7 @@
     "facebook/graph-sdk": "^5.6"
   },
   "require-dev": {
-    "wp-coding-standards/wpcs": "*"
+    "wp-coding-standards/wpcs": "*",
+    "phpunit/phpunit": "^7.0"
   }
 }

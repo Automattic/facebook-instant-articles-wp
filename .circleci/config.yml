@@ -1,0 +1,49 @@
+version: 2
+
+references:
+  phpunit_steps: &phpunit_steps
+    steps:
+      - checkout
+
+      - run: sudo apt-get update
+      - run: sudo apt-get install subversion default-mysql-client
+      - run: sudo docker-php-ext-install mysqli
+
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "composer.lock" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+      - run: composer install --prefer-source --no-interaction
+      - save_cache:
+          key: v1-dependencies-{{ checksum "composer.lock" }}
+          paths:
+            - ./vendor
+
+      - run: bash bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 $WP_VERSION
+
+      - run: ./vendor/bin/phpunit
+
+jobs:
+  php7.4-singlesite:
+    docker:
+      - image: circleci/php:7.4
+      - image: circleci/mysql:5.7
+    environment:
+      WP_MULTISITE=0
+    <<: *phpunit_steps
+
+  php7.4-multisite:
+    docker:
+      - image: circleci/php:7.4
+      - image: circleci/mysql:5.7
+    environment:
+      WP_MULTISITE=1
+    <<: *phpunit_steps
+
+workflows:
+  version: 2
+  test:
+    jobs:
+      - php7.4-singlesite
+      - php7.4-multisite
