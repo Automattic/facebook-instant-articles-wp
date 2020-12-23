@@ -131,7 +131,7 @@
         "selector" : "h3,h4,h5,h6"
     }, {
         "class": "InteractiveRule",
-        "selector" : "blockquote.instagram-media",
+        "selector" : "figure.op-interactive",
         "properties" : {
             "interactive.iframe" : {
                 "type" : "multiple",
@@ -321,7 +321,7 @@
         "selector" : "p.wp-caption-text"
     }, {
         "class": "ImageRule",
-        "selector" : "figure",
+        "selector" : "figure:not(.op-interactive)",
         "properties" : {
             "image.url" : {
                 "type" : "string",
