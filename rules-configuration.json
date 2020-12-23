@@ -380,6 +380,16 @@
                 "selector" : "figcaption.wp-caption-text"
             }
         }
+    }, {
+        "class": "ImageRule",
+        "selector": "img[data-src]",
+        "properties": {
+            "image.url": {
+                "type": "string",
+                "selector": "img",
+                "attribute": "data-src"
+            }
+        }
     }
   ]
 }
