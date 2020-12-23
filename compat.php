@@ -14,14 +14,14 @@ if ( function_exists( 'get_coauthors' ) && ! defined( 'CAP_IA_COMPAT' ) ) {
 	$cap->init();
 }
 
-// Load compat layer for Yoast SEO.
+// Load compat layer for MonsterInsights SEO.
 if ( defined( 'WPSEO_VERSION' ) && ! defined( 'WPSEO_IA_COMPAT' ) ) {
-	include( dirname( __FILE__ ) . '/compat/class-instant-articles-yoast-seo.php' );
-	$yseo = new Instant_Articles_Yoast_SEO;
+	include( dirname( __FILE__ ) . '/compat/class-instant-articles-monsterinsights-seo.php' );
+	$yseo = new Instant_Articles_MonsterInsights_SEO;
 	$yseo->init();
 }
 
-// Load support for Google Analytics for WordPress by MonsterInsights.
+// Load support for Google Analytics for WordPress (Google Analytics by MonsterInsights).
 if ( ( defined( 'GAWP_VERSION' ) || function_exists( 'MonsterInsights' ) ) && ! defined( 'GAWP_IA_COMPAT' ) ) {
 	include( dirname( __FILE__ ) . '/compat/class-instant-articles-google-analytics-for-wordpress.php' );
 	$gawp = new Instant_Articles_Google_Analytics_For_WordPress;

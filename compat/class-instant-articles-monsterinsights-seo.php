@@ -1,10 +1,10 @@
 <?php
 /**
- * Compatibility layer for Yoast SEO
+ * Compatibility layer for MonsterInsights SEO
  *
  * @since 0.1
  */
-class Instant_Articles_Yoast_SEO {
+class Instant_Articles_MonsterInsights_SEO {
 
 	/**
 	 * Init the compat layer.

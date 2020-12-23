@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Support class for Google Analytics for WordPress by MonsterInsights
+ * Support class for Google Analytics for WordPress (Google Analytics by MonsterInsights)
  *
  * @since 0.1
  */
