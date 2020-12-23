@@ -350,8 +350,18 @@ if ( version_compare( PHP_VERSION, '5.4', '<' ) ) {
 		// Transform the post to an Instant Article.
 		$adapter = new Instant_Articles_Post( $post );
 		if ( $adapter->should_submit_post() ) {
-			$url = $adapter->get_canonical_url();
-			$url = add_query_arg( 'ia_markup', '1', $url );
+			$canonical_url = $adapter->get_canonical_url();
+			$url_parts     = wp_parse_url( $canonical_url );
+
+			if ( $url_parts ) {
+				$url = trailingslashit( $url_parts['scheme'] . $url_parts['host'] . $url_parts['path'] ) . 'ia/';
+				if ( $url_parts['query'] ) {
+					$url = $url . '?'. $url_parts['query'];
+				}
+			} else {
+				$url = $canonical_url;
+			}
+
 			$fb_page_settings = Instant_Articles_Option_FB_Page::get_option_decoded();
 			$publishing_settings = Instant_Articles_Option_Publishing::get_option_decoded();
 			$dev_mode = isset( $publishing_settings['dev_mode'] )
@@ -376,20 +386,6 @@ if ( version_compare( PHP_VERSION, '5.4', '<' ) ) {
 
 	// Initialize the Instant Articles meta box.
 	Instant_Articles_Meta_Box::init();
-
-	function ia_markup_version( ) {
-		$post = get_post();
-
-		if (isset( $_GET[ 'ia_markup' ] ) && $_GET[ 'ia_markup' ]) {
-			// Transform the post to an Instant Article.
-			$adapter = new Instant_Articles_Post( $post );
-			$article = $adapter->to_instant_article();
-			echo $article->render( null, true );
-
-			die();
-		}
-	}
-	add_action( 'wp', 'ia_markup_version' );
 
 	// Add hook for generating the AMP markup
 	add_action( 'wp', array('Instant_Articles_AMP_Markup', 'markup_version') );
@@ -582,5 +578,59 @@ if ( version_compare( PHP_VERSION, '5.4', '<' ) ) {
 		}
 	}
 	add_action( 'save_post', 'rescrape_article', 999, 2 );
+
+
+	/**
+	 * Add /ia/ as the URL for instant articles markup versions of articles.
+	 */
+	function instant_articles_rewrites() {
+		add_rewrite_endpoint( 'ia', EP_PERMALINK );
+	}
+	add_action( 'after_setup_theme', 'instant_articles_rewrites' );
+
+	/**
+	 * Make sure the `ia` query var has an explicit value.
+	 *
+	 * This avoids issues when filtering the deprecated `query_string` hook.
+	 *
+	 * @since 0.0.0
+	 *
+	 * @param array $query_vars Query vars.
+	 * @return array Query vars.
+	 */
+	function ia_force_query_var_value( $query_vars ) {
+		if ( isset( $query_vars[ 'ia' ] ) && '' === $query_vars[ 'ia' ] ) {
+			$query_vars[ 'ia' ] = 1;
+		}
+		return $query_vars;
+	}
+	add_filter( 'request', 'ia_force_query_var_value' );
+
+	/**
+	 * Print out the IA version of an article.
+	 */
+	function instant_articles_template_redirect() {
+		if ( 1 === get_query_var( 'ia' ) ) {
+
+			$adapter = new Instant_Articles_Post( get_post() );
+			$post_supports_ia = apply_filters( 'instant_articles_should_submit_post', true, $adapter );
+
+			if ( $post_supports_ia ) {
+				// Transform the post to an Instant Article.
+				$post = get_post();
+				$adapter = new Instant_Articles_Post( $post );
+				$article = $adapter->to_instant_article();
+				$result = $article->render( null, true );
+
+				echo apply_filters( 'instant_articles_rendered_content', $result );
+
+				die();
+			} else {
+				wp_safe_redirect( get_permalink() );
+				die();
+			}
+		}
+	}
+	add_action( 'template_redirect', 'instant_articles_template_redirect' );
 
 }
