@@ -29,9 +29,11 @@ if ( version_compare( PHP_VERSION, '5.4', '<' ) ) {
 	return;
 } else {
 
-	$autoloader = require __DIR__ . '/vendor/autoload.php';
-	$autoloader->add( 'Facebook\\', __DIR__ . '/vendor/facebook/facebook-instant-articles-sdk-php/src' );
-	$autoloader->add( 'Facebook\\', __DIR__ . '/vendor/facebook/facebook-instant-articles-sdk-extensions-in-php/src' );
+	if ( ! class_exists( 'Facebook\\Facebook' ) && file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
+		$autoloader = require __DIR__ . '/vendor/autoload.php';
+		$autoloader->add( 'Facebook\\', __DIR__ . '/vendor/facebook/facebook-instant-articles-sdk-php/src' );
+		$autoloader->add( 'Facebook\\', __DIR__ . '/vendor/facebook/facebook-instant-articles-sdk-extensions-in-php/src' );
+	}
 
 	defined( 'ABSPATH' ) || die( 'Shame on you' );
 
