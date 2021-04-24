@@ -24,6 +24,12 @@ remove_all_filters( 'embed_oembed_html' );
  */
 function instant_articles_embed_oembed_html( $html, $url, $attr, $post_id ) {
 
+	// Don't try to fix embeds unless we're in Instant Articles context.
+	// No need to populate cache outside of Instant Articles context.
+	if ( ! is_transforming_instant_article() ) {
+		return $html;
+	}
+
 	$cache_key = md5( $url . ':instant_articles_oembed_provider' );
 	$provider_name = get_transient( $cache_key );
 
